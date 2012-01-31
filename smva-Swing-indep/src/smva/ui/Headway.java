@@ -1,0 +1,649 @@
+/*****************************************************************************
+ * Copyright 2010 Novasprint Pte Ltd. All Rights Reserved.
+ * This software is the proprietary information of Novasprint Pte Ltd.
+ * Use is subject to license terms.
+ *****************************************************************************/
+package smva.ui;
+
+//import com.webservices.AVMSWebServices;
+//import com.webservices.AVMSWebServicesService;
+//import com.webservices.BsTimepoints;
+//import com.webservices.HeadwayBean;
+//import com.webservices.RunningVehicle;
+//import com.webservices.Bst;
+import java.awt.Dimension;
+import java.awt.GraphicsConfiguration;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
+import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.image.ColorModel;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JProgressBar;
+import javax.swing.JTextField;
+import javax.swing.Timer;
+import org.netbeans.lib.awtextra.AbsoluteConstraints;
+import org.netbeans.lib.awtextra.AbsoluteLayout;
+import smva.jb.BsTimepointsBean;
+import smva.jb.BstBean;
+import smva.jb.HeadwayBean;
+import smva.jb.RunningVehicleBean;
+import smva.mgr.SmvaBus;
+
+/**
+ *
+ * @author allan.lee
+ */
+public class Headway extends JPanel {
+
+    Timer timer = new Timer(60000, new MyTimerActionListener());
+    int totalLength = 0;
+    List<BsTimepointsBean> busStopDir1 = null;
+    List<RunningVehicleBean> runVehDir1 = null;
+    List<BsTimepointsBean> busStopDir2 = null;
+    List<RunningVehicleBean> runVehDir2 = null;
+    List<BstBean> bstDir1 = null;
+    List<BstBean> bstDir2 = null;
+
+    /** Creates new form headway */
+    public Headway(int svcNum) {
+//        timer.start();
+//        System.out.println("timer start");
+//        AVMSWebServicesService service = new AVMSWebServicesService();
+//        final AVMSWebServices port = service.getAVMSWebServicesPort();
+//
+//        HeadwayBean headway = port.headwayList(svcNum);
+//
+//        busStopDir1 = headway.getDir1BusStopTP();
+//        runVehDir1 = headway.getDir1RunningVehicle();
+//        busStopDir2 = headway.getDir2BusStopTP();
+//        runVehDir2 = headway.getDir2RunningVehicle();
+//        bstDir1 = headway.getDir1Bst();
+//        bstDir2 = headway.getDir2Bst();
+
+        //        AVMSFrame.ret = "true";
+//        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+//        GraphicsDevice[] gs = ge.getScreenDevices();
+//        Rectangle bounds = null;
+//        for (GraphicsDevice curGs : gs) {
+//            GraphicsConfiguration[] gc = curGs.getConfigurations();
+//            for (GraphicsConfiguration curGc : gc) {
+//                bounds = curGc.getBounds();
+//                ColorModel cm = curGc.getColorModel();
+//                System.out.println(bounds.getX() + ", " + bounds.getY() + ", " + bounds.getWidth() + " x " + bounds.getHeight() + ", " + cm);
+//            }
+//        }
+//        totalLength = (int) bounds.getWidth() - 40;
+//        dataSelection(svcNum);
+//        initComponents();
+//        setBounds(bounds);
+
+
+        timer.start();
+        System.out.println("timer start");
+        SmvaBus mgr = new SmvaBus();
+        HeadwayBean headway = mgr.getHeadway(svcNum);
+        busStopDir1 = headway.getDir1BusStopTP();
+        runVehDir1 = headway.getDir1RunningVehicle();
+        busStopDir2 = headway.getDir2BusStopTP();
+        runVehDir2 = headway.getDir2RunningVehicle();
+        bstDir1 = headway.getDir1bst();
+        bstDir2 = headway.getDir2bst();
+//                AVMSFrame.ret = "true";
+        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        GraphicsDevice[] gs = ge.getScreenDevices();
+        Rectangle bounds = null;
+        for (GraphicsDevice curGs : gs) {
+            GraphicsConfiguration[] gc = curGs.getConfigurations();
+            for (GraphicsConfiguration curGc : gc) {
+                bounds = curGc.getBounds();
+                ColorModel cm = curGc.getColorModel();
+                System.out.println(bounds.getX() + ", " + bounds.getY() + ", " + bounds.getWidth() + " x " + bounds.getHeight() + ", " + cm);
+            }
+        }
+        totalLength = (int) bounds.getWidth() - 40;
+        dataSelection(svcNum);
+        initComponents();
+        setBounds(bounds);
+
+    }
+
+    private void dataSelection(int svcNum) {
+//        AVMSWebServicesService service = new AVMSWebServicesService();
+//        final AVMSWebServices port = service.getAVMSWebServicesPort();
+//
+//        HeadwayBean headway = port.headwayList(svcNum);
+//
+//        busStopDir1 = headway.getDir1BusStopTP();
+//        runVehDir1 = headway.getDir1RunningVehicle();
+//        busStopDir2 = headway.getDir2BusStopTP();
+//        runVehDir2 = headway.getDir2RunningVehicle();
+//        bstDir1 = headway.getDir1Bst();
+//        bstDir2 = headway.getDir2Bst();
+
+
+        SmvaBus mgr = new SmvaBus();
+        HeadwayBean headway = mgr.getHeadway(svcNum);
+        busStopDir1 = headway.getDir1BusStopTP();
+        runVehDir1 = headway.getDir1RunningVehicle();
+        busStopDir2 = headway.getDir2BusStopTP();
+        runVehDir2 = headway.getDir2RunningVehicle();
+        bstDir1 = headway.getDir1bst();
+        bstDir2 = headway.getDir2bst();
+    }
+
+    /** This method is called from within the constructor to
+     * initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is
+     * always regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">
+    private void initComponents() {
+        ArrayList totalDir1BS = new ArrayList();
+        ArrayList totalDir1VT = new ArrayList();
+        ArrayList totalDir2BS = new ArrayList();
+        ArrayList totalDir2VT = new ArrayList();
+        for (int i = 0; i < bstDir1.size(); i++) {
+            totalDir1BS.add(bstDir1.get(i).getSeq_num());
+            if (bstDir1.get(i).getItp() != null && !bstDir1.get(i).getItp().equals("")) {
+                totalDir1VT.add(bstDir1.get(i).getSeq_num());
+            }
+        }
+        for (int i = 0; i < bstDir2.size(); i++) {
+/*            totalDir2BS.add(bstDir2.get(i).getSeqNum());   */
+            if (bstDir2.get(i).getItp() != null && !bstDir2.get(i).getItp().equals("")) {
+/*                totalDir2VT.add(bstDir2.get(i).getSeqNum());    */
+            }
+        }
+
+        System.out.println("****************** " + totalLength);
+        int numOfPanel = (totalDir1VT.size() + 6 - 1) / 6;
+        JPanel[] jPanelDir1 = new JPanel[numOfPanel];
+        for (int i = 0; i < numOfPanel; i++) {
+            jPanelDir1[i] = new JPanel();
+            jPanelDir1[i].setBackground(new java.awt.Color(0, 0, 255));
+            jPanelDir1[i].setPreferredSize((new Dimension(totalLength - 20, 20)));
+        }
+        for (int i = 0; i < numOfPanel; i++) {
+            javax.swing.GroupLayout jPanelLayoutDir1 = new javax.swing.GroupLayout(jPanelDir1[i]);
+            jPanelDir1[i].setLayout(jPanelLayoutDir1);
+//            jPanelLayoutDir1.createParallelGroup(Alignment.LEADING);
+        }
+
+        setLayout(new AbsoluteLayout());
+
+        JTextField[] jTextFieldDir1 = new JTextField[bstDir1.size()];
+        JProgressBar[] jProgressBarDir1 = new JProgressBar[runVehDir1.size()];
+        JTextField[] busNumberDir1 = new JTextField[runVehDir1.size()];
+        JLabel[] jLabelDir1 = new JLabel[runVehDir1.size()];
+        ArrayList<Integer> pbWidthDir1 = new ArrayList<Integer>();
+        JTextField[] headwayLineDir1 = new JTextField[runVehDir1.size()];
+        JTextField[] headwayLine2ndDir1 = new JTextField[runVehDir1.size()];
+
+        int heightDir1 = 150;
+        float widthDir1 = 10;
+        float totalWidthDir1 = 0;
+        float pbPointsDir1 = 10;
+        int pbHeightDir1 = 120;
+        int pbHeight2Dir1 = 120;
+        int schedHeightDir1 = 120;
+        int schedHeight2Dir1 = 120;
+        int loadDir1 = 0;
+        float hwWidthDir1 = 0;
+        int hwHeightDir1 = 132;
+//Set the Bus Stop Points
+        for (int i = 0; i < bstDir1.size(); i++) {
+            jTextFieldDir1[i] = new JTextField();
+/*            jTextFieldDir1[i].setToolTipText(busStopDir1.get(i).getTpLname());   */
+            jTextFieldDir1[i].setEditable(false);
+            jTextFieldDir1[i].setHorizontalAlignment(javax.swing.JTextField.CENTER);
+            if (widthDir1 < totalLength) {
+                if (bstDir1.get(i).getItp() != null && !bstDir1.get(i).getItp().equals("")) {
+/*                    jTextFieldDir1[i].setText(String.valueOf(bstDir1.get(i).getCumDist()));   */
+                    add(jTextFieldDir1[i], new AbsoluteConstraints((int) widthDir1, heightDir1, -1, 20));
+                    widthDir1 = widthDir1 + 30 + (bstDir1.get(i).getDist() * 100);
+                } else {
+                    add(jTextFieldDir1[i], new AbsoluteConstraints((int) widthDir1, heightDir1, 3, 20));
+                    widthDir1 = widthDir1 + 3 + (bstDir1.get(i).getDist() * 100);
+                }
+            } else {
+                widthDir1 = widthDir1 + 10 - totalLength;
+                heightDir1 = heightDir1 + 200;
+                if (bstDir1.get(i).getItp() != null && !bstDir1.get(i).getItp().equals("")) {
+                    add(jTextFieldDir1[i], new AbsoluteConstraints((int) widthDir1, heightDir1, -1, 20));
+                    widthDir1 = widthDir1 + 30 + (bstDir1.get(i).getDist() * 100);
+                } else {
+                    add(jTextFieldDir1[i], new AbsoluteConstraints((int) widthDir1, heightDir1, 3, 20));
+                    widthDir1 = widthDir1 + 3 + (bstDir1.get(i).getDist() * 100);
+                }
+            }
+        }
+//Calculate the total width
+        for (int i = 0; i < bstDir1.size(); i++) {
+            totalWidthDir1 = totalWidthDir1 + (bstDir1.get(i).getDist() * 100);
+            if (bstDir1.get(i).getItp() != null && !bstDir1.get(i).getItp().equals("")) {
+                totalWidthDir1 = totalWidthDir1 + 20;
+            } else {
+                totalWidthDir1 = totalWidthDir1 + 3;
+            }
+        }
+//Set the Bus Stop bar length
+        heightDir1 = 150;
+        for (int i = 0; i < numOfPanel; i++) {
+            if (totalWidthDir1 > totalLength) {
+                add(jPanelDir1[i], new AbsoluteConstraints(10, heightDir1, totalLength, 20));
+                totalWidthDir1 = totalWidthDir1 - totalLength;
+                heightDir1 = heightDir1 + 200;
+            } else {
+                add(jPanelDir1[i], new AbsoluteConstraints(10, heightDir1, (int) totalWidthDir1, 20));
+            }
+        }
+//Calculate the progress bar length between each bus stop
+        for (int i = 0; i < bstDir1.size(); i++) {
+            if (pbPointsDir1 < totalLength) {
+                if (bstDir1.get(i).getItp() != null && !bstDir1.get(i).getItp().equals("")) {
+                    pbWidthDir1.add((int) pbPointsDir1);
+                    pbPointsDir1 = pbPointsDir1 + 30 + (bstDir1.get(i).getDist() * 100);
+                } else {
+                    pbPointsDir1 = pbPointsDir1 + 3 + (bstDir1.get(i).getDist() * 100);
+                }
+            } else {
+                pbPointsDir1 = pbPointsDir1 - totalLength + 10;
+                if (bstDir1.get(i).getItp() != null && !bstDir1.get(i).getItp().equals("")) {
+                    pbWidthDir1.add((int) pbPointsDir1);
+                    pbPointsDir1 = pbPointsDir1 + 30 + (bstDir1.get(i).getDist() * 100);
+                } else {
+                    pbPointsDir1 = pbPointsDir1 + 3 + (bstDir1.get(i).getDist() * 100);
+                }
+            }
+        }
+//Set progress bar, service icon/info and headway between bus stop
+        for (int i = 0; i < runVehDir1.size(); i++) {
+            jProgressBarDir1[i] = new JProgressBar();
+            loadDir1 = (runVehDir1.get(i).getPassenger_count() * 100) / runVehDir1.get(i).getPassenger_capacity();
+            jProgressBarDir1[i].setOrientation(1);
+            jProgressBarDir1[i].setValue(loadDir1);
+
+            busNumberDir1[i] = new JTextField();
+            busNumberDir1[i].setBackground(new java.awt.Color(255, 153, 102));
+            busNumberDir1[i].setEditable(false);
+            busNumberDir1[i].setHorizontalAlignment(javax.swing.JTextField.CENTER);
+            busNumberDir1[i].setText(String.valueOf(i));
+            busNumberDir1[i].setToolTipText("<html>\nVehicle: " + runVehDir1.get(i).getRoute_id() + "<br>\nBus Capt: 14759<br>\nPassenger Count: " + runVehDir1.get(i).getPassenger_count() + "\n</html>");
+
+//            jLabelDir1[i] = new JLabel();
+//            jLabelDir1[i].setText("<html>\n" + runVehDir1.get(i).getScheduledHeadway() + "<br>\n" + runVehDir1.get(i).getActualHeadway() + "\n</html>");
+
+            pbHeight2Dir1 = pbHeightDir1;
+            for (int x = 0; x < pbWidthDir1.size(); x++) {
+                if (runVehDir1.get(i).getLast_tp_rte_hwmon_seq_num() == 0) {
+                    if (runVehDir1.get(i).getLast_tp_rte_hwmon_seq_num() == runVehDir1.get(i + 1).getLast_tp_rte_hwmon_seq_num()) {
+                        pbHeight2Dir1 = pbHeightDir1 - 30;
+                        add(jProgressBarDir1[i], new AbsoluteConstraints(pbWidthDir1.get(x), pbHeight2Dir1, 5, 30));
+                        add(busNumberDir1[i], new AbsoluteConstraints(pbWidthDir1.get(x) + 5, pbHeight2Dir1, 25, 30));
+                    } else {
+                        add(jProgressBarDir1[i], new AbsoluteConstraints(pbWidthDir1.get(x), pbHeightDir1, 5, 30));
+                        add(busNumberDir1[i], new AbsoluteConstraints(pbWidthDir1.get(x) + 5, pbHeightDir1, 25, 30));
+//                        add(jLabelDir1[i], new AbsoluteConstraints(pbWidthDir1.get(runVehDir1.get(i).getLastTpRteHwmonSeqNum()) + ((pbWidthDir1.get(runVehDir1.get(i + 1).getLastTpRteHwmonSeqNum()) - pbWidthDir1.get(runVehDir1.get(i).getLastTpRteHwmonSeqNum())) / 2), pbHeightDir1, 20, -1));
+                    }
+                    x = pbWidthDir1.size();
+                } else if (runVehDir1.get(i).getLast_tp_rte_hwmon_seq_num() == x) {
+                    if (pbWidthDir1.get(runVehDir1.get(i).getLast_tp_rte_hwmon_seq_num()) < pbWidthDir1.get(runVehDir1.get(i - 1).getLast_tp_rte_hwmon_seq_num())) {
+                        pbHeightDir1 = pbHeightDir1 + 200;
+                    }
+                    if (runVehDir1.get(i).getLast_tp_rte_hwmon_seq_num() == runVehDir1.get(i - 1).getLast_tp_rte_hwmon_seq_num()) {
+                        pbHeight2Dir1 = pbHeightDir1 - 30;
+                        add(jProgressBarDir1[i], new AbsoluteConstraints(pbWidthDir1.get(x), pbHeight2Dir1, 5, 30));
+                        add(busNumberDir1[i], new AbsoluteConstraints(pbWidthDir1.get(x) + 5, pbHeight2Dir1, 25, 30));
+//                        add(jLabelDir1[i], new AbsoluteConstraints(pbWidthDir1.get(runVehDir1.get(i).getLastTpRteHwmonSeqNum()) + ((pbWidthDir1.get(runVehDir1.get(i + 1).getLastTpRteHwmonSeqNum()) - pbWidthDir1.get(runVehDir1.get(i).getLastTpRteHwmonSeqNum())) / 2), pbHeightDir1, 20, -1));
+                    } else {
+                        add(jProgressBarDir1[i], new AbsoluteConstraints(pbWidthDir1.get(x), pbHeightDir1, 5, 30));
+                        add(busNumberDir1[i], new AbsoluteConstraints(pbWidthDir1.get(x) + 5, pbHeightDir1, 25, 30));
+                        if (runVehDir1.get(i).getLast_tp_rte_hwmon_seq_num() != runVehDir1.get(runVehDir1.size() - 1).getLast_tp_rte_hwmon_seq_num()) {
+                            if (pbWidthDir1.get(runVehDir1.get(i).getLast_tp_rte_hwmon_seq_num()) > pbWidthDir1.get(runVehDir1.get(i + 1).getLast_tp_rte_hwmon_seq_num())) {
+//                                add(jLabelDir1[i], new AbsoluteConstraints(pbWidthDir1.get(x + 1), pbHeightDir1, 20, -1));
+                            } else {
+//                                add(jLabelDir1[i], new AbsoluteConstraints(pbWidthDir1.get(runVehDir1.get(i).getLastTpRteHwmonSeqNum()) + ((pbWidthDir1.get(runVehDir1.get(i + 1).getLastTpRteHwmonSeqNum()) - pbWidthDir1.get(runVehDir1.get(i).getLastTpRteHwmonSeqNum())) / 2), pbHeightDir1, 20, -1));
+                            }
+                        }
+                    }
+                    x = pbWidthDir1.size();
+                }
+            }
+        }
+
+        for (int i = 0; i < runVehDir1.size(); i++) {
+            jLabelDir1[i] = new JLabel();
+            jLabelDir1[i].setText("<html>\n" + runVehDir1.get(i).getScheduled_headway() + "<br>\n" + runVehDir1.get(i).getActual_headway() + "\n</html>");
+
+            for (int x = 1; x < pbWidthDir1.size(); x++) {
+                if (runVehDir1.get(i).getLast_tp_rte_hwmon_seq_num() == 0) {
+                    add(jLabelDir1[i], new AbsoluteConstraints(pbWidthDir1.get(runVehDir1.get(i).getLast_tp_rte_hwmon_seq_num()) + ((pbWidthDir1.get(runVehDir1.get(i + 1).getLast_tp_rte_hwmon_seq_num()) - pbWidthDir1.get(runVehDir1.get(i).getLast_tp_rte_hwmon_seq_num())) / 2), schedHeightDir1, 20, -1));
+                } else if (runVehDir1.get(i).getLast_tp_rte_hwmon_seq_num() != runVehDir1.get(runVehDir1.size() - 1).getLast_tp_rte_hwmon_seq_num()) {
+                    if (runVehDir1.get(i).getLast_tp_rte_hwmon_seq_num() != runVehDir1.get(i + 1).getLast_tp_rte_hwmon_seq_num()) {
+//                        if () {
+//                        } else {
+                            add(jLabelDir1[i], new AbsoluteConstraints(pbWidthDir1.get(runVehDir1.get(i).getLast_tp_rte_hwmon_seq_num()) + ((pbWidthDir1.get(runVehDir1.get(i + 1).getLast_tp_rte_hwmon_seq_num()) - pbWidthDir1.get(runVehDir1.get(i).getLast_tp_rte_hwmon_seq_num())) / 2), schedHeightDir1, 20, -1));
+//                        }
+                    }
+                }
+            }
+        }
+
+        for (int i = 0; i < runVehDir1.size(); i++) {
+            headwayLineDir1[i] = new JTextField();
+            headwayLineDir1[i].setBackground(new java.awt.Color(51, 204, 0));
+            headwayLineDir1[i].setEditable(false);
+            headwayLineDir1[i].setToolTipText(String.valueOf(i));
+
+            headwayLine2ndDir1[i] = new JTextField();
+            headwayLine2ndDir1[i].setBackground(new java.awt.Color(51, 204, 0));
+            headwayLine2ndDir1[i].setEditable(false);
+            headwayLine2ndDir1[i].setToolTipText(String.valueOf(i));
+
+//            jLabelDir1[i] = new JLabel();
+//            jLabelDir1[i].setText("<html>\n" + runVehDir1.get(i).getScheduledHeadway() + "<br>\n" + runVehDir1.get(i).getActualHeadway() + "\n</html>");
+
+            for (int x = 0; x < pbWidthDir1.size(); x++) {
+                if (runVehDir1.get(i).getLast_tp_rte_hwmon_seq_num() == 0 && x == 0) {
+                    add(headwayLineDir1[i], new AbsoluteConstraints(pbWidthDir1.get(x) + 30, hwHeightDir1, pbWidthDir1.get(x + 1) - 40, 5));
+                    x = pbWidthDir1.size();
+                } else if (runVehDir1.get(i).getLast_tp_rte_hwmon_seq_num() == x) {
+                    if (runVehDir1.get(i).getLast_tp_rte_hwmon_seq_num() != runVehDir1.get(runVehDir1.size() - 1).getLast_tp_rte_hwmon_seq_num()) {
+                        if (i == x) {
+                            add(headwayLineDir1[i], new AbsoluteConstraints(pbWidthDir1.get(x) + 30, hwHeightDir1, pbWidthDir1.get(x + 1) - pbWidthDir1.get(x) - 30, 5));
+                            hwWidthDir1 = pbWidthDir1.get(x + 1);
+                            x = pbWidthDir1.size();
+                        } else if (i == x - 1) {
+                            if (hwWidthDir1 > pbWidthDir1.get(x)) {
+                                add(headwayLineDir1[i], new AbsoluteConstraints(pbWidthDir1.get(x - 1), hwHeightDir1, totalLength - pbWidthDir1.get(x - 1) + 10, 5));
+                                hwHeightDir1 = hwHeightDir1 + 200;
+                                hwWidthDir1 = 10;
+                                add(headwayLine2ndDir1[i], new AbsoluteConstraints((int) hwWidthDir1, hwHeightDir1, pbWidthDir1.get(x) - 10, 5));
+                                x = pbWidthDir1.size();
+                            } else {
+                                add(headwayLineDir1[i], new AbsoluteConstraints(pbWidthDir1.get(x - 1) + 30, hwHeightDir1, pbWidthDir1.get(x) - pbWidthDir1.get(x - 1) - 30, 5));
+                                x = pbWidthDir1.size();
+                            }
+                        }
+                    }
+                }
+            }
+ 
+        }
+
+//        numOfPanel = (totalDir2VT.size() + 6 - 1) / 6;
+//        JPanel[] jPanelDir2 = new JPanel[numOfPanel];
+//        for (int i = 0; i < numOfPanel; i++) {
+//            jPanelDir2[i] = new JPanel();
+//            jPanelDir2[i].setBackground(new java.awt.Color(0, 255, 0));
+//            jPanelDir2[i].setPreferredSize((new Dimension(totalLength - 20, 20)));
+//        }
+//        for (int i = 0; i < numOfPanel; i++) {
+//            javax.swing.GroupLayout jPanelLayoutDir2 = new javax.swing.GroupLayout(jPanelDir2[i]);
+//            jPanelDir2[i].setLayout(jPanelLayoutDir2);
+//        }
+//
+//        JTextField[] jTextFieldDir2 = new JTextField[bstDir1.size()];
+//        JProgressBar[] jProgressBarDir2 = new JProgressBar[runVehDir1.size()];
+//        JTextField[] busNumberDir2 = new JTextField[runVehDir1.size()];
+//        JLabel[] jLabelDir2 = new JLabel[runVehDir1.size()];
+//        ArrayList<Integer> pbWidthDir2 = new ArrayList<Integer>();
+//        JTextField[] headwayLineDir2 = new JTextField[runVehDir1.size()];
+//        JTextField[] headwayLine2ndDir2 = new JTextField[runVehDir1.size()];
+//
+//        int heightDir2 = 375;
+//        float widthDir2 = totalLength - 10;
+//        float totalWidthDir2 = 0;
+//        float pbPointsDir2 = totalLength - 10;
+//        int pbHeightDir2 = 395;
+//        int pbHeight2Dir2 = 395;
+//        int loadDir2 = 0;
+////        float hwWidthDir2 = 0;
+//        int hwHeightDir2 = 407;
+//
+//        for (int i = 0; i < bstDir2.size(); i++) {
+//            jTextFieldDir2[i] = new JTextField();
+//            jTextFieldDir2[i].setToolTipText(busStopDir2.get(i).getTpLname());
+//            jTextFieldDir2[i].setEditable(false);
+//            jTextFieldDir2[i].setHorizontalAlignment(javax.swing.JTextField.CENTER);
+//            if (widthDir2 > 10) {
+//                if (bstDir2.get(i).getItp() != null && !bstDir2.get(i).getItp().equals("")) {
+//                    jTextFieldDir2[i].setText(String.valueOf(bstDir2.get(i).getCumDist()));
+//                    if (bstDir2.get(i).getSeqNum() == 1) {
+//                        add(jTextFieldDir2[i], new AbsoluteConstraints((int) widthDir2, heightDir2, -1, 20));
+//                        widthDir2 = widthDir2 - 40 - (bstDir2.get(i).getDist() * 100);
+//                    } else {
+//                        widthDir2 = widthDir2 - 30;
+//                        add(jTextFieldDir2[i], new AbsoluteConstraints((int) widthDir2, heightDir2, -1, 20));
+//                        widthDir2 = widthDir2 - (bstDir2.get(i).getDist() * 100);
+//                    }
+//                } else {
+//                    add(jTextFieldDir2[i], new AbsoluteConstraints((int) widthDir2, heightDir2, 3, 20));
+//                    widthDir2 = widthDir2 - 3 - (bstDir2.get(i).getDist() * 100);
+//
+//                }
+//            } else {
+//                widthDir2 = totalLength - widthDir2 - 10;
+//                heightDir2 = heightDir2 - 200;
+//                if (bstDir2.get(i).getItp() != null && !bstDir2.get(i).getItp().equals("")) {
+//                    add(jTextFieldDir2[i], new AbsoluteConstraints((int) widthDir2, heightDir2, -1, 20));
+//                    widthDir2 = widthDir2 - 30 - (bstDir2.get(i).getDist() * 100);
+//                } else {
+//                    add(jTextFieldDir2[i], new AbsoluteConstraints((int) widthDir2, heightDir2, 3, 20));
+//                    widthDir2 = widthDir2 - 3 - (bstDir2.get(i).getDist() * 100);
+//                }
+//            }
+//        }
+//        for (int i = 0; i < bstDir2.size(); i++) {
+//            totalWidthDir2 = totalWidthDir2 + (bstDir2.get(i).getDist() * 100);
+//            if (bstDir2.get(i).getItp() != null && !bstDir2.get(i).getItp().equals("")) {
+//                totalWidthDir2 = totalWidthDir2 + 20;
+//            } else {
+//                totalWidthDir2 = totalWidthDir2 + 3;
+//            }
+//        }
+//
+//
+//        heightDir2 = 375;
+//        for (int i = 0; i < numOfPanel; i++) {
+//            if (totalWidthDir2 > totalLength) {
+//                add(jPanelDir2[i], new AbsoluteConstraints(10, heightDir2, totalLength, 20));
+//                totalWidthDir2 = totalWidthDir2 - totalLength;
+//                heightDir2 = heightDir2 - 200;
+//            } else {
+//                add(jPanelDir2[i], new AbsoluteConstraints((int) widthDir2 + bstDir2.size(), heightDir2, (int) totalWidthDir1, 20));
+//            }
+//        }
+//
+//        for (int i = 0; i < bstDir2.size(); i++) {
+//            if (pbPointsDir2 > 10) {
+//                if (bstDir2.get(i).getSeqNum() == 1) {
+//                    pbWidthDir2.add((int) pbPointsDir2);
+//                    pbPointsDir2 = pbPointsDir2 - 40 - (bstDir2.get(i).getDist() * 100);
+//                } else if (bstDir2.get(i).getItp() != null && !bstDir2.get(i).getItp().equals("")) {
+//                    pbWidthDir2.add((int) pbPointsDir2);
+//                    pbPointsDir2 = pbPointsDir2 - 30 - (bstDir2.get(i).getDist() * 100);
+//                } else {
+//                    pbPointsDir2 = pbPointsDir2 - 3 - (bstDir2.get(i).getDist() * 100);
+//                }
+//            } else {
+//                pbPointsDir2 = totalLength - pbPointsDir2 - 10;
+//                if (bstDir2.get(i).getItp() != null && !bstDir2.get(i).getItp().equals("")) {
+//                    pbWidthDir2.add((int) pbPointsDir2);
+//                    pbPointsDir2 = pbPointsDir2 - 30 - (bstDir2.get(i).getDist() * 100);
+//                } else {
+//                    pbPointsDir2 = pbPointsDir2 - 3 - (bstDir2.get(i).getDist() * 100);
+//                }
+//            }
+//        }
+//
+//        for (int i = 0; i < runVehDir2.size(); i++) {
+//            jProgressBarDir2[i] = new JProgressBar();
+//            loadDir2 = (runVehDir2.get(i).getPassengerCount() * 100) / runVehDir2.get(i).getPassengerCapacity();
+//            jProgressBarDir2[i].setOrientation(1);
+//            jProgressBarDir2[i].setValue(loadDir2);
+//
+//            busNumberDir2[i] = new JTextField();
+//            busNumberDir2[i].setBackground(new java.awt.Color(255, 153, 102));
+//            busNumberDir2[i].setEditable(false);
+//            busNumberDir2[i].setHorizontalAlignment(javax.swing.JTextField.CENTER);
+//            busNumberDir2[i].setText(String.valueOf(i));
+//            busNumberDir2[i].setToolTipText("<html>\nVehicle: " + runVehDir2.get(i).getRouteId() + "<br>\nBus Capt: 14759<br>\nPassenger Count: " + runVehDir2.get(i).getPassengerCount() + "\n</html>");
+//
+//            jLabelDir2[i] = new JLabel();
+//            jLabelDir2[i].setText("<html>\n" + runVehDir2.get(i).getScheduledHeadway() + "<br>\n" + runVehDir2.get(i).getActualHeadway() + "\n</html>");
+//
+//            pbHeight2Dir2 = pbHeightDir2;
+//            for (int x = 0; x < pbWidthDir2.size(); x++) {
+//                if (runVehDir2.get(i).getLastTpRteHwmonSeqNum() == 0 && x == 0) {
+//                    if (runVehDir2.get(i).getLastTpRteHwmonSeqNum() == runVehDir2.get(i + 1).getLastTpRteHwmonSeqNum()) {
+//                        pbHeight2Dir2 = pbHeightDir2 + 30;
+//                        add(jProgressBarDir2[i], new AbsoluteConstraints(pbWidthDir2.get(x), pbHeight2Dir2, 5, 30));
+//                        add(busNumberDir2[i], new AbsoluteConstraints(pbWidthDir2.get(x) + 5, pbHeight2Dir2, 25, 30));
+//                    } else {
+//                        add(jProgressBarDir2[i], new AbsoluteConstraints(pbWidthDir2.get(x), pbHeightDir2, 5, 30));
+//                        add(busNumberDir2[i], new AbsoluteConstraints(pbWidthDir2.get(x) + 5, pbHeightDir2, 25, 30));
+//                        add(jLabelDir2[i], new AbsoluteConstraints(pbWidthDir2.get(runVehDir2.get(i + 1).getLastTpRteHwmonSeqNum()) + ((pbWidthDir2.get(runVehDir2.get(i).getLastTpRteHwmonSeqNum()) - pbWidthDir2.get(runVehDir2.get(i + 1).getLastTpRteHwmonSeqNum())) / 2), pbHeightDir2, 20, -1));
+//                    }
+//                    x = pbWidthDir2.size();
+//                } else if (runVehDir2.get(i).getLastTpRteHwmonSeqNum() == x) {
+//                    if (pbWidthDir2.get(runVehDir2.get(i).getLastTpRteHwmonSeqNum()) > pbWidthDir2.get(runVehDir2.get(i - 1).getLastTpRteHwmonSeqNum())) {
+//                        pbHeightDir2 = pbHeightDir2 - 200;
+//                    }
+//                    if (runVehDir2.get(i).getLastTpRteHwmonSeqNum() == runVehDir2.get(i - 1).getLastTpRteHwmonSeqNum()) {
+//                        pbHeight2Dir2 = pbHeightDir2 + 30;
+//                        add(jProgressBarDir2[i], new AbsoluteConstraints(pbWidthDir2.get(x) - 30, pbHeight2Dir2, 5, 30));
+//                        add(busNumberDir2[i], new AbsoluteConstraints(pbWidthDir2.get(x) - 25, pbHeight2Dir2, 25, 30));
+//                        if (runVehDir2.get(i).getLastTpRteHwmonSeqNum() != runVehDir2.get(runVehDir2.size() - 1).getLastTpRteHwmonSeqNum()) {
+//                            if (pbWidthDir2.get(runVehDir2.get(i).getLastTpRteHwmonSeqNum()) < pbWidthDir2.get(runVehDir2.get(i + 1).getLastTpRteHwmonSeqNum())) {
+//                                if (pbWidthDir2.get(runVehDir2.get(i).getLastTpRteHwmonSeqNum()) < pbWidthDir2.get(runVehDir2.get(i + 1).getLastTpRteHwmonSeqNum())) {
+//                                    add(jLabelDir2[i], new AbsoluteConstraints(pbWidthDir2.get(x + 1) - 30, pbHeightDir2 - 200, 20, -1));
+//                                } else {
+//                                    add(jLabelDir2[i], new AbsoluteConstraints(pbWidthDir2.get(x + 1), pbHeightDir2, 20, -1));
+//                                }
+//                            }
+//                        }
+//                    } else {
+//                        add(jProgressBarDir2[i], new AbsoluteConstraints(pbWidthDir2.get(x) - 30, pbHeightDir2, 5, 30));
+//                        add(busNumberDir2[i], new AbsoluteConstraints(pbWidthDir2.get(x) - 25, pbHeightDir2, 25, 30));
+//                        if (runVehDir2.get(i).getLastTpRteHwmonSeqNum() != runVehDir2.get(runVehDir2.size() - 1).getLastTpRteHwmonSeqNum()) {
+//                            if (pbWidthDir2.get(runVehDir2.get(i).getLastTpRteHwmonSeqNum()) > pbWidthDir2.get(runVehDir2.get(i + 1).getLastTpRteHwmonSeqNum())) {
+//                                add(jLabelDir2[i], new AbsoluteConstraints(pbWidthDir2.get(runVehDir2.get(i + 1).getLastTpRteHwmonSeqNum()) + ((pbWidthDir2.get(runVehDir2.get(i).getLastTpRteHwmonSeqNum()) - pbWidthDir2.get(runVehDir2.get(i + 1).getLastTpRteHwmonSeqNum())) / 2), pbHeightDir2, 20, -1));
+//                            }
+//                        }
+//                    }
+//                    x = pbWidthDir2.size();
+//                }
+//            }
+//        }
+//
+//        for (int i = 0; i < runVehDir2.size(); i++) {
+//            headwayLineDir2[i] = new JTextField();
+//            headwayLineDir2[i].setBackground(new java.awt.Color(51, 204, 0));
+//            headwayLineDir2[i].setEditable(false);
+//            headwayLineDir2[i].setToolTipText(String.valueOf(i));
+//
+//            headwayLine2ndDir2[i] = new JTextField();
+//            headwayLine2ndDir2[i].setBackground(new java.awt.Color(51, 204, 0));
+//            headwayLine2ndDir2[i].setEditable(false);
+//            headwayLine2ndDir2[i].setToolTipText(String.valueOf(i));
+//            for (int x = 0; x < pbWidthDir2.size(); x++) {
+//                if (runVehDir2.get(i).getLastTpRteHwmonSeqNum() == 0 && x == 0) {
+//                    add(headwayLineDir2[i], new AbsoluteConstraints(pbWidthDir2.get(x + 1), hwHeightDir2, pbWidthDir2.get(x) - pbWidthDir2.get(x + 1), 5));
+//                    x = pbWidthDir2.size();
+//                } else if (runVehDir2.get(i).getLastTpRteHwmonSeqNum() == x) {
+//                    if (runVehDir2.get(i).getLastTpRteHwmonSeqNum() != runVehDir2.get(runVehDir2.size() - 1).getLastTpRteHwmonSeqNum()) {
+//                        if (i != x) {
+//                            if (runVehDir2.get(i + 1).getLastTpRteHwmonSeqNum() - 1 != 1) {
+//                                if (pbWidthDir2.get(x + 1) > pbWidthDir2.get(x)) {
+//                                    add(headwayLineDir2[i], new AbsoluteConstraints(10, hwHeightDir2, pbWidthDir2.get(x) - 40, 5));
+//                                    add(headwayLine2ndDir2[i], new AbsoluteConstraints(pbWidthDir2.get(x + 2), hwHeightDir2 - 200, totalLength - pbWidthDir2.get(x + 2) + 10, 5));
+//                                } else {
+//                                    add(headwayLineDir2[i], new AbsoluteConstraints(pbWidthDir2.get(x + 2), hwHeightDir2, pbWidthDir2.get(x) - pbWidthDir2.get(x + 2) - 30, 5));
+//                                }
+//                            } else {
+//                                add(headwayLineDir2[i], new AbsoluteConstraints(pbWidthDir2.get(x + 1), hwHeightDir2, pbWidthDir2.get(x) - pbWidthDir2.get(x + 1) - 30, 5));
+//                            }
+//                            x = pbWidthDir2.size();
+//                        } else {
+//                            add(headwayLineDir2[i], new AbsoluteConstraints(pbWidthDir2.get(x + 1), hwHeightDir2, pbWidthDir2.get(x) - pbWidthDir2.get(x + 1), 5));
+//                            x = pbWidthDir2.size();
+//                        }
+//                    }
+//                }
+//            }
+//        }
+
+
+//        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setBounds(new java.awt.Rectangle(0, 0, 0, 0));
+//        addWindowListener(new java.awt.event.WindowAdapter() {
+
+//            public void windowClosed(java.awt.event.WindowEvent evt) {
+//                formWindowClosed(evt);
+//            }
+//        });
+//        pack();
+    }
+    int haha = 0;
+
+    private class MyTimerActionListener implements ActionListener {
+
+        public void actionPerformed(ActionEvent e) {
+            haha = haha + 1;
+            removeAll();
+            dataSelection(157);
+            initComponents();
+            revalidate();
+            System.out.println("haha " + haha);
+        }
+    }
+
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {
+//        AVMSFrame.ret = "true";
+    }
+
+//    private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {
+//        AVMSFrame.ret = "true";
+//        timer.stop();
+//        int pbx = jProgressBar1.getX();
+//        int pby = jProgressBar1.getY();
+//        jProgressBar1.setLocation(pbx - 50, pby);
+//        int tf2x = busNumber.getX();
+//        int tf2y = busNumber.getY();
+//        busNumber.setLocation(tf2x - 50, tf2y);
+//        int tf3x = headwayLine.getX();
+//        int tf3y = headwayLine.getY();
+//        headwayLine.setLocation(tf3x - 50, tf3y);
+//        int l1x = jLabel1.getX();
+//        int l1y = jLabel1.getY();
+//        jLabel1.setLocation(l1x - 50, l1y);
+//    }
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        java.awt.EventQueue.invokeLater(new Runnable() {
+
+            public void run() {
+                new Headway(157).setVisible(true);
+            }
+        });
+    }
+    // Variables declaration - do not modify
+//    private javax.swing.JLabel jLabel1;
+//    private javax.swing.JPanel jPanel1;
+//    private javax.swing.JProgressBar jProgressBar1;
+//    private javax.swing.JTextField jTextField1;
+//    private javax.swing.JTextField busNumber;
+//    private javax.swing.JTextField headwayLine;
+//    private javax.swing.JTextField jTextField4;
+    // End of variables declaration
+//    private javax.swing.JTextField jTextField5;
+}

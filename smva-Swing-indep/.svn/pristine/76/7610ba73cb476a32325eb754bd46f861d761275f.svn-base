@@ -1,0 +1,10 @@
+dbUserid=sa
+dbPassword=sa
+dbUrl=jdbc:sqlserver://NSS-PC-001:1433;databaseName=AVMS;selectMethod=cursor
+interval=5
+loggerName=AVMSBatchEngine
+logFilePath=C:\\AVMS\\Logs\\AVMS_DailyBatch.log
+SCS_vehicle=1
+SCS_operator=1
+ScsVehicleDatFilePath=C:\\AVMS\\SCS\\SCS_Checkin-VEHICLE_
+ScsOperatorDatFilePath=C:\\AVMS\\SCS\\SCS_Checkin-OPERATOR_

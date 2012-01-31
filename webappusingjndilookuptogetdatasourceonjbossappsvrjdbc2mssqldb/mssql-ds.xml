@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- ===================================================================== -->
+<!--                                                                       -->
+<!--  JBoss Server Configuration                                           -->
+<!--                                                                       -->
+<!-- ===================================================================== -->
+
+<!-- $Id: mssql-ds.xml 71536 2008-04-01 07:05:26Z adrian@jboss.org $ -->
+
+  <!-- ======================================================================-->
+  <!-- New ConnectionManager setup for Microsoft SQL Server 2005  driver     -->
+  <!-- Further information about the Microsoft JDBC Driver version 1.1      -->
+  <!-- can be found here:                                                   -->
+  <!-- http://msdn2.microsoft.com/en-us/library/aa496082.aspx               -->
+  <!-- ===================================================================== -->
+
+<datasources>
+    <local-tx-datasource>
+        <jndi-name>jboss</jndi-name>
+        <connection-url>jdbc:sqlserver://localhost:1433;databaseName=jboss</connection-url>
+        <driver-class>com.microsoft.sqlserver.jdbc.SQLServerDriver</driver-class>
+        <user-name>jboss</user-name>
+        <password>jboss</password>
+    </local-tx-datasource>
+</datasources>
